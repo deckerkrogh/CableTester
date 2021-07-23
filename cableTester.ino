@@ -297,7 +297,7 @@ int connectionTest()
   allWiresLowOut();
   bool connectionPassed = true;
   int numConnections = numWires - 6; //the 6 is hardcoded because of the 6 wires inside the cable tester that are connected together
-  bool onlyOnOne = true;
+  bool onlyOnOne = true;  //the purpose of this is to only print error message once
 
   digitalWrite (OUT_SER, HIGH);
   for (int c = 0; c < numWires; c++)
@@ -315,9 +315,9 @@ int connectionTest()
       
       Serial.println ();
       Serial.print ("Connection test failed on wire: ");
-      Serial.print(c);
+      Serial.print(c+1);  //adding one so the pins are one-based (no 0 pin)
       
-      tft.print (c);
+      tft.print (c+1);
       tft.print (":");
       
       connectionPassed = false;
@@ -330,7 +330,7 @@ int connectionTest()
   Serial.println  ();
   tft.println ();
 
-  //if there are no connections
+  //return 2 if no connections
   if (numConnections == 0)
   {
     return 2;
@@ -353,8 +353,6 @@ int connectionTest()
     }
   }
 }
-
-
 
 int crossTest()
 {
@@ -385,10 +383,10 @@ int crossTest()
             if (onlyOnOne) {tft.print ("Wires are crossed:"); tft.println ();}
             onlyOnOne = false;
           
-            Serial.print ("Wire "); Serial.print (c); Serial.print (" is crossed to wire "); Serial.print (d);
+            Serial.print ("Wire "); Serial.print (c+1); Serial.print (" is crossed to wire "); Serial.print (d+1);
             Serial.println ();
             tft.setTextColor (ILI9341_RED);
-            tft.print (c); tft.print (":"); tft.print (d);
+            tft.print (c+1); tft.print (":"); tft.print (d+1);
             tft.print ("  ");
             crossPassed = false;
         }
@@ -460,8 +458,8 @@ int shortTest()
           if (c != shortedWires_d[d]) //this checks to see if is has already been outputted and if it has it breaks the loop
           {
           shortedWires_d[c] = d;
-          Serial.print (d); Serial.print (":");
-          tft.print (d); tft.print (":");
+          Serial.print (d+1); Serial.print (":");
+          tft.print (d+1); tft.print (":");
           }
           else {break;}
         }
@@ -479,7 +477,6 @@ int shortTest()
     }
 
   }
-
 
   if (multipleShorts)
   {
@@ -514,8 +511,8 @@ int shortTest()
       {
         if (inContents[d] == 1)
         {
-          Serial.print (d); Serial.print (":");
-          tft.print (d); tft.print (":");
+          Serial.print (d+1); Serial.print (":");
+          tft.print (d+1); tft.print (":");
         }
       }
       Serial.print (" are shorted together");
@@ -524,8 +521,6 @@ int shortTest()
 
   }
   allWiresLowOut();
-
-
 
   //returns values
   if ((shortLowPassed) && (shortHighPassed) && (shortHighMultPassed))
@@ -633,7 +628,7 @@ void homeButtons(int p_x, int p_y)
 
 
 
-
+//Source for below: github.com/Bodmer/TFT_HX8357/blob/master/TFT_HX8357.cpp
 
 // This function opens a Windows Bitmap (BMP) file and
 // displays it at the given coordinates.  It's sped up
