@@ -1,10 +1,19 @@
-#include <Adafruit_GFX.h>    // Core graphics library
+//Decker Krogh
+//Autometrix
+//2016-2021
+//
+//2021 updates: 
+//		changed pin names to be 0-based
+//		put libraries inside src directory
+//		
+
+#include "src/Adafruit-GFX-Library/Adafruit_GFX.h"    // Core graphics library
 #include <SPI.h>
-#include "Adafruit_ILI9341.h"
-#include "TouchScreen.h"
+#include "src/Adafruit_ILI9341/Adafruit_ILI9341.h"
+#include "src/Adafruit_TouchScreen/TouchScreen.h"
 #include <SD.h>
 
-#include <MemoryFree.h>
+#include "src/MemoryFree/MemoryFree.h"
 
 //Output shift register pins
 #define OUT_INV_OE 22
@@ -81,7 +90,7 @@ void setup()
 
 
   //lcd setup
-  tft.begin(ILI9341D);
+  tft.begin(0);  //0: triggers spi_default_freq
 
   //sd card setup
   Serial.println("Initializing SD card...");
@@ -769,6 +778,3 @@ uint32_t read32(File &f) {
   ((uint8_t *)&result)[3] = f.read(); // MSB
   return result;
 }
-
-
-
