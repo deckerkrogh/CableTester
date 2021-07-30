@@ -5,7 +5,6 @@
 //2021 updates: 
 //		changed pin names to be 0-based
 //		put libraries inside src directory
-//		
 
 #include "src/Adafruit-GFX-Library/Adafruit_GFX.h"    // Core graphics library
 #include <SPI.h>
@@ -40,6 +39,7 @@
 #define TS_MAXX 920
 #define TS_MAXY 940
 
+//Touchscreen controls
 #define MINPRESSURE 200 // was 10
 #define MAXPRESSURE 1000
 
@@ -47,17 +47,16 @@
 #define TFT_DC 9
 #define TFT_CS 10
 
+//SD card pin
 #define SD_CS 4
 
+//Object initialization
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
-
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
 //how many wires it tests
 const int numWires = 56;
-
 int inContents[numWires];
-
 bool onHomeScreen = true;
 
 void setup()
@@ -107,10 +106,9 @@ void setup()
 
   allWiresLowOut();
 
-  tft.fillRect (0, 0, 100, 100, ILI9341_RED);
+  //tft.fillRect (0, 0, 100, 100, ILI9341_RED);
 
 }
-
 
 
 void loop()
@@ -163,8 +161,7 @@ void shiftOne()
   digitalWrite (OUT_RCLK, HIGH);
   delay(1);
   digitalWrite (OUT_RCLK, LOW);
-
-
+  return;
 }
 
 
@@ -190,6 +187,7 @@ void inRead ()
     //Serial.print (inContentsReversed[c]); //DEBUGGING
 
   }
+  //Serial.println ();
   digitalWrite (IN_CLK_INH, HIGH);
 
 
@@ -214,6 +212,7 @@ void displayInContents()
     Serial.print (inContents[c]);
     tft.print (inContents[c]);
   }
+  return;
 }
 
 int shortWireOne;
@@ -251,6 +250,7 @@ void allWiresHighOut()
   digitalWrite (OUT_RCLK, HIGH);
   delay (1);
   digitalWrite (OUT_RCLK, LOW);
+  return;
 }
 
 void allWiresLowOut()
@@ -267,6 +267,7 @@ void allWiresLowOut()
   digitalWrite (OUT_RCLK, HIGH);
   delay (1);
   digitalWrite (OUT_RCLK, LOW);
+  return;
 }
 
 
@@ -297,7 +298,7 @@ void tftDisplay(char output[], char color[], bool isNum, bool isLn)
     else
     {tft.print (output);}
   }
-  
+  return;
 }
 
 
