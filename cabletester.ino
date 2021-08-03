@@ -4,15 +4,20 @@
 //
 //2021 updates: 
 //		changed pin names to be 0-based
-//		put libraries inside src directory
+//		put libraries inside src directory, switched to relative imports
+//		changed to adafruit BMP image library, deprecated old function
+//		deprecated SD and SPI libraries, changed to SdFat and Adafruit_SPIFlash
 
-#include "src/Adafruit-GFX-Library/Adafruit_GFX.h"    // Core graphics library
-#include <SPI.h>
-#include "src/Adafruit_ILI9341/Adafruit_ILI9341.h"
-#include "src/Adafruit_TouchScreen/TouchScreen.h"
-#include <SD.h>
+//#include <SD.h>  //TODO: replace with SDFat.h
+#include "src/SdFat/src/SdFat.h"							// SD library
+//#include <SPI.h>  //TODO: replace with Adafruit_SPIFlash.h
+#include "src/Adafruit_SPIFlash/src/Adafruit_SPIFlash.h"	// SPI library
+#include "src/Adafruit-GFX-Library/Adafruit_GFX.h"          // Core graphics library
+#include "src/Adafruit_ILI9341/Adafruit_ILI9341.h"          // Screen-specific library
+#include "src/Adafruit_TouchScreen/TouchScreen.h"	        // For getting touch data
+#include "src/Adafruit_ImageReader/Adafruit_ImageReader.h"  // For drawing BMP
+#include "src/MemoryFree/MemoryFree.h"						// For checking amount of free memory
 
-#include "src/MemoryFree/MemoryFree.h"
 
 //Output shift register pins
 #define OUT_INV_OE 22
@@ -50,14 +55,19 @@
 //SD card pin
 #define SD_CS 4
 
-//Object initialization
+//Home screen image name
+#define AUTOBMPFILE "auto.bmp"
+
+//Global objects
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
+SdFat SD;
+Adafruit_ImageReader reader = Adafruit_ImageReader(SD);
 
-//how many wires it tests
-const int numWires = 56;
-int inContents[numWires];
-bool onHomeScreen = true;
+//Global variables
+const int numWires = 56;   //Number of wires it tests
+int inContents[numWires];  //Array to hold current contents of input-registers
+bool onHomeScreen = true;  //Bool to indicate gui state
 
 void setup()
 {
@@ -89,23 +99,33 @@ void setup()
 
 
   //lcd setup
-  tft.begin(0);  //0: triggers spi_default_freq
+  tft.begin(0);  //0 option: enables spi_default_freq
 
   //sd card setup
-  Serial.println("Initializing SD card...");
   if (!SD.begin(SD_CS)) {
-    Serial.println("failed!");
+    Serial.println("Failed to initialize SD card");
   }
-  Serial.println("OK!");
+  else {
+	Serial.println("Successfully initialized SD card");
+  }
 
   tft.setRotation (2); //rotation changes throughout program due to touchscreen changing orientation and messing things up
 
-  bmpDraw ("auto.bmp", 0, 0);
+  //Draw BMP
+  ImageReturnCode stat;  //store return status of drawBMP
+  stat = reader.drawBMP(AUTOBMPFILE, tft, 0, 0); //draws BMP
+  if(stat) {
+     Serial.println("Failed to draw BMP file.");
+	 Serial.print("ImageReturnCode: ");
+	 Serial.print(stat);
+	 Serial.println();
+  }
 
-  Serial.println("READY");
+  Serial.println("Setup complete.");
 
   allWiresLowOut();
 
+  //red rectangle :)
   //tft.fillRect (0, 0, 100, 100, ILI9341_RED);
 
 }
@@ -115,7 +135,6 @@ void loop()
 {
   // Retrieve a point
   TSPoint p = ts.getPoint();
-
 
   // valid minimum and maximum pressure
   if (p.z < MINPRESSURE || p.z > MAXPRESSURE)
@@ -142,10 +161,10 @@ void loop()
   {
     homeButtons(p.x, p.y);
   }
-  else
+  else  //return to home screen
   {
-    tft.setRotation (2); //2
-    bmpDraw ("auto.bmp", 0, 0);
+    tft.setRotation (2);
+    ImageReturnCode stat = reader.drawBMP(AUTOBMPFILE, tft, 0, 0);
     onHomeScreen = true;
   }
 }
@@ -637,6 +656,8 @@ void homeButtons(int p_x, int p_y)
 }
 
 
+/*
+//-------------------TO BE DEPRECATED------------------------
 
 //Source for below: github.com/Bodmer/TFT_HX8357/blob/master/TFT_HX8357.cpp
 
@@ -779,3 +800,4 @@ uint32_t read32(File &f) {
   ((uint8_t *)&result)[3] = f.read(); // MSB
   return result;
 }
+*/
