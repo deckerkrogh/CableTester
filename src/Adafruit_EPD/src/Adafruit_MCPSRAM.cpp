@@ -1,4 +1,4 @@
-﻿#include "Adafruit_MCPSRAM.h"
+#include "Adafruit_MCPSRAM.h"
 
 #include <Arduino.h>
 
