@@ -9,14 +9,21 @@
 //		deprecated SD and SPI libraries, changed to SdFat and Adafruit_SPIFlash
 
 //#include <SD.h>  //TODO: replace with SDFat.h
-#include "src/SdFat/src/SdFat.h"							// SD library
+//#include "src/SdFat/src/SdFat.h"							// SD library
+#include <SdFat.h>
 //#include <SPI.h>  //TODO: replace with Adafruit_SPIFlash.h
-#include "src/Adafruit_SPIFlash/src/Adafruit_SPIFlash.h"	// SPI library
-#include "src/Adafruit-GFX-Library/Adafruit_GFX.h"          // Core graphics library
-#include "src/Adafruit_ILI9341/Adafruit_ILI9341.h"          // Screen-specific library
-#include "src/Adafruit_TouchScreen/TouchScreen.h"	        // For getting touch data
-#include "src/Adafruit_ImageReader/Adafruit_ImageReader.h"  // For drawing BMP
-#include "src/MemoryFree/MemoryFree.h"						// For checking amount of free memory
+//#include "src/Adafruit_SPIFlash/src/Adafruit_SPIFlash.h"	// SPI library
+#include <Adafruit_SPIFlash.h>
+//#include "src/Adafruit-GFX-Library/Adafruit_GFX.h"          // Core graphics library
+#include <Adafruit_GFX.h>
+//#include "src/Adafruit_ILI9341/Adafruit_ILI9341.h"          // Screen-specific library
+#include <Adafruit_ILI9341.h>
+//#include "src/Adafruit_TouchScreen/TouchScreen.h"	        // For getting touch data
+#include <TouchScreen.h>
+//#include "src/Adafruit_ImageReader/Adafruit_ImageReader.h"  // For drawing BMP
+#include <Adafruit_ImageReader.h>
+//#include "src/MemoryFree/MemoryFree.h"						// For checking amount of free memory
+#include <MemoryFree.h>
 
 
 //Output shift register pins
