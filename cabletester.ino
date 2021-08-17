@@ -158,6 +158,7 @@ void loop()
   p.y = map(p.y, TS_MINY, TS_MAXY, 0, tft.height());
   
   //Serial.println ();
+  //Serial.println ("Detected point: ");
   //Serial.println (p.x);
   //Serial.println (p.y);
 
@@ -202,6 +203,8 @@ void inRead ()
 
   digitalWrite (IN_CLK_INH, LOW);
 
+  Serial.println();  //DEBUGGING
+
   for (int c = 0; c < numWires; c++)
   {
     inContentsReversed[c] = digitalRead (IN_QH);
@@ -210,7 +213,7 @@ void inRead ()
     digitalWrite (IN_CLK, LOW);
     delay(1);
 
-    //Serial.print (inContentsReversed[c]); //DEBUGGING
+    Serial.print (inContentsReversed[c]); //DEBUGGING
 
   }
   //Serial.println ();
@@ -594,6 +597,9 @@ void homeButtons(int p_x, int p_y)
   if ((p_x > 0) && (p_x < 320) && (p_y > 240) && (p_y < 480)) // the left side of the screen is the testing button
   {
 
+    Serial.println ();
+    Serial.println ("Detected point: run test");
+
     onHomeScreen = false;
 
     tft.setRotation (3);
@@ -640,6 +646,9 @@ void homeButtons(int p_x, int p_y)
   else if ((p_x > 160) && (p_x < 320) && (p_y > 0) && (p_y < 240)) //bottom right quadrant is shift low
   {
 
+    Serial.println ();
+    Serial.println ("Detected point: shift low");
+
     digitalWrite (OUT_SRCLK, HIGH);
     delay (1);
     digitalWrite (OUT_SRCLK, LOW);
@@ -650,6 +659,9 @@ void homeButtons(int p_x, int p_y)
   }
   else if ((p_x > 0) && (p_x < 160) && (p_y > 0) && (p_y < 240))//top right quadrant is shift high
   {
+
+    Serial.println ();
+    Serial.println ("Detected point: shift high");
     digitalWrite (OUT_SER, HIGH);
     delay (1);
     digitalWrite (OUT_SRCLK, HIGH);
