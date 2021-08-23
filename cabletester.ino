@@ -2,28 +2,19 @@
 //Autometrix
 //2016-2021
 //
-//2021 updates: 
-//		changed pin names to be 0-based
-//		put libraries inside src directory, switched to relative imports
-//		changed to adafruit BMP image library, deprecated old function
+//August 2021 updates: 
+//		changed pin names to be 1-based
+//		put libraries inside src directory (though not depending on them)
+//		changed to Adafruit BMP image library, deprecated old function
 //		deprecated SD and SPI libraries, changed to SdFat and Adafruit_SPIFlash
 
-//#include <SD.h>  //TODO: replace with SDFat.h
-//#include "src/SdFat/src/SdFat.h"							// SD library
-#include <SdFat.h>
-//#include <SPI.h>  //TODO: replace with Adafruit_SPIFlash.h
-//#include "src/Adafruit_SPIFlash/src/Adafruit_SPIFlash.h"	// SPI library
-#include <Adafruit_SPIFlash.h>
-//#include "src/Adafruit-GFX-Library/Adafruit_GFX.h"          // Core graphics library
-#include <Adafruit_GFX.h>
-//#include "src/Adafruit_ILI9341/Adafruit_ILI9341.h"          // Screen-specific library
-#include <Adafruit_ILI9341.h>
-//#include "src/Adafruit_TouchScreen/TouchScreen.h"	        // For getting touch data
-#include <TouchScreen.h>
-//#include "src/Adafruit_ImageReader/Adafruit_ImageReader.h"  // For drawing BMP
-#include <Adafruit_ImageReader.h>
-//#include "src/MemoryFree/MemoryFree.h"						// For checking amount of free memory
-#include <MemoryFree.h>
+#include <SdFat.h>  					// SD library
+#include <Adafruit_SPIFlash.h>  		// SPI library
+#include <Adafruit_GFX.h>  				// Core graphics library
+#include <Adafruit_ILI9341.h>  			// Screen-specific library
+#include <TouchScreen.h>  				// For getting touch data
+#include <Adafruit_ImageReader.h>  		// For drawing BMP
+#include <MemoryFree.h>  				// For checking amount of free memory
 
 
 //Output shift register pins
@@ -305,6 +296,7 @@ void allWiresLowOut()
 //The isNum boolean is so that it knows to convert ascii-converted integers into normal int
 //The isLn boolean adds adds a new line and nothing else
 //The color is for color
+//NOTE: Not used
 
 void tftDisplay(char output[], char color[], bool isNum, bool isLn)
 {
@@ -676,7 +668,7 @@ void homeButtons(int p_x, int p_y)
 
 
 /*
-//-------------------TO BE DEPRECATED------------------------
+//-------------------OLD BMP DRAW FUNCTION, DEPRECATED------------------------
 
 //Source for below: github.com/Bodmer/TFT_HX8357/blob/master/TFT_HX8357.cpp
 
